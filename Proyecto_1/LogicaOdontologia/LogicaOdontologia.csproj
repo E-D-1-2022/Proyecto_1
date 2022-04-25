@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Tree\Binary_Tree\" />
+    <Folder Include="Session\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CustomStructures\CustomStructures.csproj" />
   </ItemGroup>
 
 </Project>

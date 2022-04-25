@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomStructures", "CustomStructures\CustomStructures.csproj", "{CB366AC4-ABE5-44BD-9D14-0501E9518D1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Salud_Para_Tu_Sonriza", "Salud_Para_Tu_Sonriza\Salud_Para_Tu_Sonriza.csproj", "{F7CFE69A-CFA4-4271-AE27-D4FE86E61F46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Salud_Para_Tu_Sonriza", "Salud_Para_Tu_Sonriza\Salud_Para_Tu_Sonriza.csproj", "{F7CFE69A-CFA4-4271-AE27-D4FE86E61F46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicaOdontologia", "LogicaOdontologia\LogicaOdontologia.csproj", "{3C38F10F-7AAF-47E2-88D6-2939FF9CA83C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F7CFE69A-CFA4-4271-AE27-D4FE86E61F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7CFE69A-CFA4-4271-AE27-D4FE86E61F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7CFE69A-CFA4-4271-AE27-D4FE86E61F46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C38F10F-7AAF-47E2-88D6-2939FF9CA83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C38F10F-7AAF-47E2-88D6-2939FF9CA83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C38F10F-7AAF-47E2-88D6-2939FF9CA83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C38F10F-7AAF-47E2-88D6-2939FF9CA83C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
