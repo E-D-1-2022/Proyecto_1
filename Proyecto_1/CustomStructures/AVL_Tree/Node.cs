@@ -43,7 +43,7 @@ namespace CustomStructures.AVL_Tree
             }
         }
 
-        public int Balance()
+        public int esBalancedo()
         {
             if(derecha == null)
             {

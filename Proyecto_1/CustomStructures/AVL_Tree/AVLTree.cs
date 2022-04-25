@@ -7,18 +7,26 @@ using System.Text;
 
 namespace CustomStructures.AVL_Tree
 {
-    public class AVLTree<T>:Itree_AVL<T>
+    /// <summary>
+    /// Es un árbol avl 
+    /// </summary>
+    /// <typeparam name="T">Es el tipo de dato con el que vas a trabajar</typeparam>
+    public class AVLTree<T> : Itree_AVL<T>
     {
         Func<T, T, int> CompareTo;
         Node<T> RootNode;
         public int Count;
+        /// <summary>
+        /// Inicializa el árbol
+        /// </summary>
+        /// <param name="CompareTo">Debes siempre enviarle una funcion que sea igual a CompareTo para poder trabajar el arbol</param>
         public AVLTree(Func<T, T, int> CompareTo)
         {
             this.CompareTo = CompareTo;
             RootNode = null;
             Count = 0;
         }
-        public Node<T> FindParent(T value)
+        private Node<T> FindParent(T value)
         {
             Node<T> nodoAnterior = null;
             Node<T> nodoActual = RootNode;
@@ -29,7 +37,7 @@ namespace CustomStructures.AVL_Tree
                 {
                     return nodoAnterior;
                 }
-                else if (CompareTo(value,nodoActual.Value) > 0)
+                else if (CompareTo(value, nodoActual.Value) > 0)
                 {
                     nodoAnterior = nodoActual;
                     nodoActual = nodoActual.derecha;
@@ -43,17 +51,45 @@ namespace CustomStructures.AVL_Tree
 
             return null;
         }
-        public Node<T> Find(T value)
+        /// <summary>
+        /// Funcion para buscar un valor
+        /// </summary>
+        /// <param name="value">El valor a buscar</param>
+        /// <returns>El valor encontrado</returns>
+        public T Find(T value)
         {
             Node<T> nodoActual = RootNode;
 
             while (nodoActual != null)
             {
-                if (nodoActual.Value.Equals(value))
+                int Result = CompareTo(value, nodoActual.Value);
+                if (Result < 0)
+                {
+                    nodoActual = nodoActual.izquierda;
+                }
+                else if (Result > 0)
+                {
+                    nodoActual = nodoActual.derecha;
+                }
+                else
+                {
+                    return nodoActual.Value;
+                }
+
+            }
+            return default(T);
+        }
+        private Node<T> IFind(T Value)
+        {
+            Node<T> nodoActual = RootNode;
+
+            while (nodoActual != null)
+            {
+                if (nodoActual.Value.Equals(Value))
                 {
                     return nodoActual;
                 }
-                else if (CompareTo(nodoActual.Value,value) < 0)
+                else if (CompareTo(Value, nodoActual.Value) < 0)
                 {
                     nodoActual = nodoActual.derecha;
                 }
@@ -75,7 +111,7 @@ namespace CustomStructures.AVL_Tree
                 {
                     return nodoAnterior;
                 }
-                else if (CompareTo(objetivo.Value,nodoActual.Value) > 0)
+                else if (CompareTo(objetivo.Value, nodoActual.Value) > 0)
                 {
                     nodoAnterior = nodoActual;
                     nodoActual = nodoActual.derecha;
@@ -89,6 +125,10 @@ namespace CustomStructures.AVL_Tree
 
             return null;
         }
+        /// <summary>
+        /// Añade un nuevo elemento al árbol
+        /// </summary>
+        /// <param name="Value">Valor a isertar</param>
         public void Add(T Value)
         {
             if (RootNode == null)
@@ -103,8 +143,8 @@ namespace CustomStructures.AVL_Tree
         }
         private void Add(T Value, Node<T> iterando)
         {
-            bool shouldAdd = false;
-            if (CompareTo(Value,iterando.Value) < 0)
+            int Result = CompareTo(Value, iterando.Value);
+            if (Result < 0)
             {
                 if (iterando.izquierda != null)
                 {
@@ -112,10 +152,11 @@ namespace CustomStructures.AVL_Tree
                 }
                 else
                 {
-                    shouldAdd = true;
+                    if (iterando.izquierda == null) { iterando.izquierda = new Node<T>(); }
+                    iterando.izquierda.Value = Value;
                 }
             }
-            else if((CompareTo(Value,iterando.Value) > 0))
+            else if (Result > 0)
             {
                 if (iterando.derecha != null)
                 {
@@ -123,39 +164,24 @@ namespace CustomStructures.AVL_Tree
                 }
                 else
                 {
-                    shouldAdd = true;
-                }
-            }
-
-            if (shouldAdd)
-            {
-                if (
-                    CompareTo(Value,iterando.Value) < 0)
-                {
-                    if (iterando.izquierda == null) { iterando.izquierda = new Node<T>(); }
-                    iterando.izquierda.Value = Value;
-                }
-                else  if ((CompareTo(Value,iterando.Value) > 0))
-                {
                     if (iterando.derecha == null) { iterando.derecha = new Node<T>(); }
                     iterando.derecha.Value = Value;
                 }
-                shouldAdd = false;
             }
 
-            while (Math.Abs(iterando.Balance()) > 1)
+            while (Math.Abs(iterando.esBalancedo()) > 1)
             {
-                if (iterando.Balance() > 1)
+                if (iterando.esBalancedo() > 1)
                 {
-                    LeftRotation(iterando);
+                    RotacionIzquierda(iterando);
                 }
-                else if (iterando.Balance() < 1)
+                else if (iterando.esBalancedo() < 1)
                 {
-                    RightRotation(iterando);
+                    RotacionDerecha(iterando);
                 }
             }
         }
-        private void LeftRotation(Node<T> targetNode)
+        private void RotacionIzquierda(Node<T> targetNode)
         {
             Node<T> parentNode = FindParent(targetNode);
             Node<T> newHead = targetNode.derecha;
@@ -163,7 +189,7 @@ namespace CustomStructures.AVL_Tree
 
             if (newHead.derecha == null && newHead.izquierda != null)
             {
-                RightRotation(newHead);
+                RotacionDerecha(newHead);
                 newHead = targetNode.derecha;
             }
 
@@ -187,7 +213,7 @@ namespace CustomStructures.AVL_Tree
             newHead.izquierda = targetNode;
             targetNode.derecha = tempHolder;
         }
-        private void RightRotation(Node<T> targetNode)
+        private void RotacionDerecha(Node<T> targetNode)
         {
             Node<T> parentNode = FindParent(targetNode);
             Node<T> newHead = targetNode.izquierda;
@@ -195,7 +221,7 @@ namespace CustomStructures.AVL_Tree
 
             if (newHead.izquierda == null && newHead.derecha != null)
             {
-                LeftRotation(newHead);
+                RotacionIzquierda(newHead);
                 newHead = targetNode.izquierda;
             }
 
@@ -219,6 +245,11 @@ namespace CustomStructures.AVL_Tree
             newHead.derecha = targetNode;
             targetNode.izquierda = tempHolder;
         }
+        /// <summary>
+        /// Elimina un elemento del arbol
+        /// </summary>
+        /// <param name="targetValue">Valor a eliminar</param>
+        /// <returns></returns>
         public bool Remove(T targetValue)
         {
             if (RootNode == null)
@@ -226,7 +257,7 @@ namespace CustomStructures.AVL_Tree
                 return false;
             }
 
-            Node<T> targetNode = Find(targetValue);
+            Node<T> targetNode = IFind(targetValue);
             if (targetNode == null)
             {
                 return false;
@@ -253,14 +284,14 @@ namespace CustomStructures.AVL_Tree
 
                     if (targetNode != RootNode)
                     {
-                    //    if (targetNode.IsLessThan(parentNode))
-                    //    {
-                    //        parentNode.LeftChild = replacementNode;
-                    //    }
-                    //    else
-                    //    {
-                    //        parentNode.RightChild = replacementNode;
-                    //    }
+                        if (CompareTo(targetNode.Value, parentNode.Value) < 0)
+                        {
+                            parentNode.izquierda = replacementNode;
+                        }
+                        else
+                        {
+                            parentNode.derecha = replacementNode;
+                        }
                     }
                     else
                     {
@@ -272,14 +303,14 @@ namespace CustomStructures.AVL_Tree
                 {
                     if (targetNode != RootNode)
                     {
-                    //    if (targetNode.IsLessThan(parentNode) || targetNode.Value.Equals(parentNode.Value))
-                    //    {
-                    //        parentNode.LeftChild = targetNode.RightChild;
-                    //    }
-                    //    else
-                    //    {
-                    //        parentNode.RightChild = targetNode.RightChild;
-                    //    }
+                        if (CompareTo(targetNode.Value, parentNode.Value) < 0 || targetNode.Value.Equals(parentNode.Value))
+                        {
+                            parentNode.izquierda = targetNode.derecha;
+                        }
+                        else
+                        {
+                            parentNode.derecha = targetNode.derecha;
+                        }
                     }
                     else
                     {
@@ -292,27 +323,31 @@ namespace CustomStructures.AVL_Tree
                     Delete(LeftMax, nodoActual.izquierda);
                 }
             }
-            //else if (nodoActual.IsLessThan(targetNode))
-            //{
-            //    Delete(targetNode, nodoActual.RightChild);
-            //}
+            else if (CompareTo(nodoActual.Value, targetNode.Value) < 0)
+            {
+                Delete(targetNode, nodoActual.derecha);
+            }
             else
             {
                 Delete(targetNode, nodoActual.izquierda);
             }
 
-            while (Math.Abs(nodoActual.Balance()) > 1)
+            while (Math.Abs(nodoActual.esBalancedo()) > 1)
             {
-                if (nodoActual.Balance() > 1)
+                if (nodoActual.esBalancedo() > 1)
                 {
-                    LeftRotation(nodoActual);
+                    RotacionIzquierda(nodoActual);
                 }
                 else
                 {
-                    RightRotation(nodoActual);
+                    RotacionDerecha(nodoActual);
                 }
             }
         }
+        /// <summary>
+        /// Recorrido in order de los arboles 
+        /// </summary>
+        /// <returns>Una lista con los datos del arbol, esta lista es ordenada</returns>
         public List<T> InOrder()
         {
             List<T> returnList = new List<T>();
