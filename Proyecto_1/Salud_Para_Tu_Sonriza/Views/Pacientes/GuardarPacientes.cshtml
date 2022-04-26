@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "GuardarPacientes";
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="containerFull">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                </div>
+                <div class="modal-body">
+                    <p>@ViewBag.Message</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="submit" asp-controller="Pacientes" asp-action="InsertarPacientes" class="btn btn-secondary">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="containerFull">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Paciente guardado exitosamente</h5>
+                </div>
+                <div class="modal-body">
+                    <p>@ViewData["Mensaje"]</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="submit" asp-controller="Pacientes" asp-action="InsertarPacientes" class="btn btn-lg btn-secondary">Guardar otro Paciente</a>
+                    <a type="submit" asp-controller="Pacientes" asp-action="ListarPacientes" class="btn btn-lg btn-danger">Listar Pacientes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+

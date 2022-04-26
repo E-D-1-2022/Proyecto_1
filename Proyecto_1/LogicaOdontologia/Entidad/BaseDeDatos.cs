@@ -16,7 +16,7 @@ namespace LogicaOdontologia.Entidad
         /// <param name="NewValue">Value for insert</param>
         /// <param name="OldValue">Curent value in the node</param>
         /// <returns>if "NewValue" is greater than "OldValue" return 1 else if "NewValue" is less than "OldValue" return 1 else if "NewValue" is equal at "Oldvalue" return 0/returns>
-        public int CompareTo(PacienteDTO NewValue, PacienteDTO OldValue) {
+        public static  int CompareTo(PacienteDTO NewValue, PacienteDTO OldValue) {
             if (NewValue.DPI < OldValue.DPI)
             {
                 return -1;
@@ -26,7 +26,7 @@ namespace LogicaOdontologia.Entidad
             }
             return 0;
         }
-        public AVLTree<PacienteDTO> ArbolPacientes = new AVLTree<PacienteDTO>(BaseDeDatos.Instance.CompareTo);
+        public AVLTree<PacienteDTO> ArbolPacientes = new AVLTree<PacienteDTO>(BaseDeDatos.CompareTo);
         
         /// <summary>
         /// Return the instance of the class BaseDeDatos

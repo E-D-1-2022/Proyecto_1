@@ -13,10 +13,10 @@ namespace LogicaOdontologia.DTO
         }
         public string Nombre_Completo { get; set; }
 
-        public int64 DPI { get; set; }
+        public Int64 DPI { get; set; }
 
         public int Edad { get; set; }
-        public int TelefonoContacto { get; set; }
+        public Int64 TelefonoContacto { get; set; }
         public DateTime Fecha_ultima_consulta { get; set; }
         public DateTime Fecha_proxima_consulta { get; set; }
         public List<DescripcionTratamientoDTO> Descripciones_Tratamiento { get; set; }

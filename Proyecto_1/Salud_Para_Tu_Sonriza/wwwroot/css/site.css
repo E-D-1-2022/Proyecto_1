@@ -80,3 +80,11 @@ body {
 .containerFull {
    height:150vh;
 }
+.card {
+    border: 2px solid black;
+    border-radius: 2rem;
+}
+.encabezado-card {
+    border-top-right-radius: 2rem !important;
+    border-top-left-radius: 2rem !important;
+}

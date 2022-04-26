@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Session\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CustomStructures\CustomStructures.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 
@@ -13,8 +11,11 @@ namespace CustomStructures.AVL_Tree
     /// <typeparam name="T">Es el tipo de dato con el que vas a trabajar</typeparam>
     public class AVLTree<T> : Itree_AVL<T>
     {
+        List<LogDTO> ListaLog { get; set; }
         Func<T, T, int> CompareTo;
-        Node<T> RootNode;
+        int ConRDerecha=0;
+        int ConRIzquierda = 0;
+        Node<T> Raiz;
         public int Count;
         /// <summary>
         /// Inicializa el árbol
@@ -23,13 +24,14 @@ namespace CustomStructures.AVL_Tree
         public AVLTree(Func<T, T, int> CompareTo)
         {
             this.CompareTo = CompareTo;
-            RootNode = null;
+            Raiz = null;
             Count = 0;
+            ListaLog = new List<LogDTO>();
         }
         private Node<T> FindParent(T value)
         {
             Node<T> nodoAnterior = null;
-            Node<T> nodoActual = RootNode;
+            Node<T> nodoActual = Raiz;
 
             while (nodoActual != null)
             {
@@ -52,13 +54,13 @@ namespace CustomStructures.AVL_Tree
             return null;
         }
         /// <summary>
-        /// Funcion para buscar un valor
+        /// Return the element parent of the any node
         /// </summary>
-        /// <param name="value">El valor a buscar</param>
-        /// <returns>El valor encontrado</returns>
+        /// <param name="value">Value serchead</param>
+        /// <returns>Value euquals at the value inserted</returns>
         public T Find(T value)
         {
-            Node<T> nodoActual = RootNode;
+            Node<T> nodoActual = Raiz;
 
             while (nodoActual != null)
             {
@@ -73,15 +75,18 @@ namespace CustomStructures.AVL_Tree
                 }
                 else
                 {
+                    ListaLog.Add(new LogDTO { Descripcion = "Se realizo una busqueda en donde se encotrno el dato", FechaSuceso = DateTime.Now });
                     return nodoActual.Value;
                 }
 
             }
+            ListaLog.Add(new LogDTO { Descripcion = "Se realizo una busqueda en donde no se encotrno el dato", FechaSuceso = DateTime.Now });
+
             return default(T);
         }
         private Node<T> IFind(T Value)
         {
-            Node<T> nodoActual = RootNode;
+            Node<T> nodoActual = Raiz;
 
             while (nodoActual != null)
             {
@@ -103,7 +108,7 @@ namespace CustomStructures.AVL_Tree
         private Node<T> FindParent(Node<T> objetivo)
         {
             Node<T> nodoAnterior = null;
-            Node<T> nodoActual = RootNode;
+            Node<T> nodoActual = Raiz;
 
             while (nodoActual != null)
             {
@@ -126,20 +131,19 @@ namespace CustomStructures.AVL_Tree
             return null;
         }
         /// <summary>
-        /// Añade un nuevo elemento al árbol
+        /// Insert a new element in the tree , if the element exist in the tree the node update with the value
         /// </summary>
-        /// <param name="Value">Valor a isertar</param>
+        /// <param name="Value">Value for insert</param>
         public void Add(T Value)
         {
-            if (RootNode == null)
+            if (Raiz == null)
             {
-                RootNode = new Node<T>();
-                RootNode.Value = Value;
+                Raiz = new Node<T>();
+                Raiz.Value = Value;
                 Count++;
                 return;
             }
-            Count++;
-            Add(Value, RootNode);
+            Add(Value, Raiz);
         }
         private void Add(T Value, Node<T> iterando)
         {
@@ -154,6 +158,7 @@ namespace CustomStructures.AVL_Tree
                 {
                     if (iterando.izquierda == null) { iterando.izquierda = new Node<T>(); }
                     iterando.izquierda.Value = Value;
+                    Count++;
                 }
             }
             else if (Result > 0)
@@ -166,7 +171,11 @@ namespace CustomStructures.AVL_Tree
                 {
                     if (iterando.derecha == null) { iterando.derecha = new Node<T>(); }
                     iterando.derecha.Value = Value;
+                    Count++;
                 }
+            }
+            else {
+                iterando.Value = Value;
             }
 
             while (Math.Abs(iterando.esBalancedo()) > 1)
@@ -174,12 +183,61 @@ namespace CustomStructures.AVL_Tree
                 if (iterando.esBalancedo() > 1)
                 {
                     RotacionIzquierda(iterando);
+                    ConRIzquierda++;
                 }
                 else if (iterando.esBalancedo() < 1)
                 {
                     RotacionDerecha(iterando);
+                    ConRIzquierda++;
                 }
             }
+            if (ConRIzquierda > 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
+            }
+            else if (ConRIzquierda == 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
+
+            }
+            else if (ConRDerecha > 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la derecha", FechaSuceso = DateTime.Now });
+
+            }
+            else if (ConRDerecha == 1) { 
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la derecha", FechaSuceso = DateTime.Now });
+
+            }
+            ListaLog.Add(new LogDTO { Descripcion = "Se agrego un nuevo valor al árbol", FechaSuceso = DateTime.Now });
+        }
+        /// <summary>
+        /// Retutn if the element exist in the tree
+        /// </summary>
+        /// <param name="Value">Value search</param>
+        /// <returns>if element exist return true else return false</returns>
+        public bool Exists(T Value) {
+            Node<T> Trabajo = Raiz;
+            while (Trabajo != null) {
+               int Result = CompareTo(Value, Trabajo.Value);
+                if (Result < 0)
+                {
+                    Trabajo = Trabajo.izquierda;
+                }
+                else if (Result > 0)
+                {
+                    Trabajo = Trabajo.derecha;
+                }
+                else {
+                    ListaLog.Add(new LogDTO { Descripcion = "Se realizo una busqueda en donde se encotrno el dato y asimismo validamos que el elemento existe", FechaSuceso = DateTime.Now });
+
+                    return true;
+                }
+            }
+            ListaLog.Add(new LogDTO { Descripcion = "Se realizo una busqueda en donde no se encotrno el dato y asimismo validamos que el elemento existe", FechaSuceso = DateTime.Now });
+
+            return false;
+            
         }
         private void RotacionIzquierda(Node<T> targetNode)
         {
@@ -206,7 +264,7 @@ namespace CustomStructures.AVL_Tree
             }
             else
             {
-                RootNode = newHead;
+                Raiz = newHead;
             }
             tempHolder = newHead.izquierda;
 
@@ -238,7 +296,7 @@ namespace CustomStructures.AVL_Tree
             }
             else
             {
-                RootNode = newHead;
+                Raiz = newHead;
             }
             tempHolder = newHead.derecha;
 
@@ -252,7 +310,7 @@ namespace CustomStructures.AVL_Tree
         /// <returns></returns>
         public bool Remove(T targetValue)
         {
-            if (RootNode == null)
+            if (Raiz == null)
             {
                 return false;
             }
@@ -262,7 +320,7 @@ namespace CustomStructures.AVL_Tree
             {
                 return false;
             }
-            Node<T> nodoActual = RootNode;
+            Node<T> nodoActual = Raiz;
 
             Count--;
             Delete(targetNode, nodoActual);
@@ -282,39 +340,39 @@ namespace CustomStructures.AVL_Tree
                     replacementNode.izquierda = targetNode.izquierda;
                     replacementNode.derecha = targetNode.derecha;
 
-                    if (targetNode != RootNode)
+                    if (targetNode != Raiz)
                     {
                         if (CompareTo(targetNode.Value, parentNode.Value) < 0)
                         {
                             parentNode.izquierda = replacementNode;
                         }
-                        else
+                        else if(CompareTo(targetNode.Value,parentNode.Value)>0)
                         {
                             parentNode.derecha = replacementNode;
                         }
                     }
                     else
                     {
-                        RootNode = replacementNode;
+                        Raiz = replacementNode;
                     }
                     nodoActual = replacementNode;
                 }
                 else
                 {
-                    if (targetNode != RootNode)
+                    if (targetNode != Raiz)
                     {
                         if (CompareTo(targetNode.Value, parentNode.Value) < 0 || targetNode.Value.Equals(parentNode.Value))
                         {
                             parentNode.izquierda = targetNode.derecha;
                         }
-                        else
+                        else if (CompareTo(targetNode.Value, parentNode.Value)> 0)
                         {
                             parentNode.derecha = targetNode.derecha;
                         }
                     }
                     else
                     {
-                        RootNode = targetNode.derecha;
+                        Raiz = targetNode.derecha;
                     }
                 }
 
@@ -343,30 +401,57 @@ namespace CustomStructures.AVL_Tree
                     RotacionDerecha(nodoActual);
                 }
             }
+            if (ConRIzquierda > 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
+            }
+            else if (ConRIzquierda == 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
+
+            }
+            else if (ConRDerecha > 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la derecha", FechaSuceso = DateTime.Now });
+
+            }
+            else if (ConRDerecha == 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la derecha", FechaSuceso = DateTime.Now });
+
+            }
+            ListaLog.Add(new LogDTO { Descripcion = "Se realizo una eliminación", FechaSuceso = DateTime.Now });
+
         }
         /// <summary>
         /// Recorrido in order de los arboles 
         /// </summary>
         /// <returns>Una lista con los datos del arbol, esta lista es ordenada</returns>
+        List<T> returnList = new List<T>();
         public List<T> InOrder()
         {
-            List<T> returnList = new List<T>();
-            InOrder(RootNode);
+            returnList.Clear();
+            if (Raiz == null) {
+                return returnList;
+            }
+
+            InOrder(Raiz);
 
             return returnList;
-
-            void InOrder(Node<T> startingNode)
+        }
+        void InOrder(Node<T> startingNode)
+        {
+            if (startingNode.izquierda != null)
             {
-                if (startingNode.izquierda != null)
-                {
-                    InOrder(startingNode.izquierda);
-                }
-                returnList.Add(startingNode.Value);
-                if (startingNode.derecha != null)
-                {
-                    InOrder(startingNode.derecha);
-                }
+                InOrder(startingNode.izquierda);
             }
+            returnList.Add(startingNode.Value);
+            if (startingNode.derecha != null)
+            {
+                InOrder(startingNode.derecha);
+            }
+            ListaLog.Add(new LogDTO { Descripcion = "Se realizoel recorrido inorder", FechaSuceso = DateTime.Now });
+
         }
 
     }
