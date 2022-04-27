@@ -18,7 +18,7 @@ namespace LogicaOdontologia.DTO
         public int Edad { get; set; }
         public Int64 TelefonoContacto { get; set; }
         public DateTime Fecha_ultima_consulta { get; set; }
-        public DateTime Fecha_proxima_consulta { get; set; }
+        public DateTime? Fecha_proxima_consulta { get; set; }
         public List<DescripcionTratamientoDTO> Descripciones_Tratamiento { get; set; }
     }
 }

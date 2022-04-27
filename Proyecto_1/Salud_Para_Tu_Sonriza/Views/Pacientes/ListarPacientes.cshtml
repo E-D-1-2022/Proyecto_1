@@ -3,8 +3,14 @@
 @{
     ViewData["Title"] = "ListarPacientes";
 }
-
-<div  class="containerFull">
+<div class="row pb-2 justify-content-center">
+    <div class="col-sm-2"><a class="btn btn-primary" asp-controller="Pacientes" asp-route-Tipo_Lista="Lipieza Dental">Filtar Por Necesitan hacerse una limpieza dental</a></div>
+    <div class="col-sm-2"><a class="btn btn-danger" asp-controller="Pacientes" asp-route-Tipo_Lista="Seguimiento Ortodoncia">Filtar Por seguimiento a su tratamineto de ortodoncia</a></div>
+    <div class="col-sm-2"><a class="btn btn-secondary" asp-controller="Pacientes" asp-route-Tipo_Lista="Lipieza Caries">Filtar Por seguimineto a su tratamiento de caries</a></div>
+    <div class="col-sm-2"><a class="btn btn-warning" asp-controller="Pacientes" asp-route-Tipo_Lista="Tratamiento Especifico">Filtar Por seguimineto a su tratamiento especifico</a></div>
+    <div class="col-sm-2"><a class="btn btn-success" asp-controller="Pacientes" asp-route-Tipo_Lista="ListaCompleta">Refresh <i class="fa-solid fa-arrow-rotate-left px-2"></i></a></div>
+</div>
+<div class="containerFull">
     <table class="table">
         <thead>
             <tr>
