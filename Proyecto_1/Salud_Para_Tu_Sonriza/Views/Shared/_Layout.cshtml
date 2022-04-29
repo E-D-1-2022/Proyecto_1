@@ -3,49 +3,52 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Salud_Para_Tu_Sonriza</title>
+    <link rel="icon" href="~/Images/brillante.ico" />
+    <title>@ViewData["Title"] - Salud para tu sonrisa</title>
     <link rel="stylesheet" href="~/lib/node_modules/normalize.css/normalize.css" />
     <link rel="stylesheet" href="~/lib/node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/node_modules/fortawesome/fontawesome-free/css/all.min.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-light bg-primary fixed-top">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Offcanvas navbar</a>
+    <header class="bordesNav">
+        <nav class="navbar  navbar-light bg-primary fixed-top">
+            <div class="container-fluid bordesNav">
+                <img src="~/Images/brillante.png" /> Salud para tu sonrisa
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><img src="~/Images/brillante.png" /> Salud para tu sonrisa</h5>
                         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" asp-controller="home" asp-action="Index">Home</a>
+                                <i class="fa-solid fa-house-user px-2"></i><a class="nav-link active" aria-current="page" asp-controller="home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="home" asp-action="Privacy">Privacy</a>
-                            </li>
+                                <i class="fa-solid fa-shield px-2"></i> <a class="nav-link" asp-controller="home" asp-action="Privacy">Derechos de autor</a>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                   Pacientes
+                                    Pacientes
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Pacientes" asp-action="InsertarPacientes">Insertar Pacientes</a></li>
+                                    <li><i class="fa-solid fa-plus px-2"></i><a class="dropdown-item" asp-controller="Pacientes" asp-action="InsertarPacientes">Insertar Pacientes</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" asp-controller="Pacientes" asp-action="ListarPacientes" asp-route-Tipo_Lista="ListaCompleta"> Listar Pacientes</a></li>
+                                    <li><i class="fa-solid fa-list px-2"></i><a class="dropdown-item" asp-controller="Pacientes" asp-action="ListarPacientes" asp-route-Tipo_Lista="ListaCompleta"> Listar Pacientes</a></li>
                                 </ul>
                             </li>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-download px-2"></i><a class="nav-link" asp-controller="Pacientes" asp-action="DescargarLog">Descargar el log del arbol</a>
+                            </li>
                         </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        <form class="d-flex" asp-controller="Pacientes" asp-action="BuscarPaciente">
+                            <input class="form-control me-2" id="txtFiltro" name="txtFiltro" type="search" placeholder="Ingrese el DPI o el nombre del paciente que va a buscar" aria-label="Search">
+                            <button type="submit" class="btn btn-outline-success">Buscar Paciente</button>
                         </form>
                     </div>
                 </div>
@@ -66,23 +69,16 @@
                 <!-- Facebook -->
                 <a class="btn btn-primary btn-floating m-1"
                    style="background-color: #3b5998;"
-                   href="#!"
+                   href="https://www.facebook.com/solsisgt"
                    role="button">
                     <i class="fab fa-facebook-f"></i>
                 </a>
 
-                <!-- Twitter -->
-                <a class="btn btn-primary btn-floating m-1"
-                   style="background-color: #55acee; "
-                   href="#!"
-                   role="button">
-                    <i class="fab fa-twitter"></i>
-                </a>
 
                 <!-- Google -->
                 <a class="btn btn-primary btn-floating m-1"
                    style="background-color: #dd4b39; "
-                   href="#!"
+                   href="mailto:solsis502.gt@gmail.com"
                    role="button">
                     <i class="fab fa-google"></i>
                 </a>
@@ -90,22 +86,14 @@
                 <!-- Instagram -->
                 <a class="btn btn-primary btn-floating m-1"
                    style="background-color: #ac2bac; "
-                   href="#!"
+                   href="https://www.instagram.com/solsis_gt/"
                    role="button">
                     <i class="fab fa-instagram"></i>
-                </a>
-
-                <!-- Linkedin -->
-                <a class="btn btn-primary btn-floating m-1"
-                   style="background-color: #0082ca; "
-                   href="#!"
-                   role="button">
-                    <i class="fab fa-linkedin-in"></i>
                 </a>
                 <!-- Github -->
                 <a class="btn btn-primary btn-floating m-1"
                    style="background-color: #333333; "
-                   href="#!"
+                   href="https://github.com/SolsisGt"
                    role="button">
                     <i class="fab fa-github"></i>
                 </a>
@@ -116,7 +104,7 @@
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2022 Copyright:
-            <a class="text-white text-decoration-none" href="http://solsis.rf.gd/?i=1"><img src="~/Images/LogoSolsis.png" height="40" width="30"/>oluciones con Sistemas</a>
+            <a class="text-white text-decoration-none" href="http://solsis.rf.gd/?i=1"><img src="~/Images/LogoSolsis.png" height="40" width="30" />oluciones con Sistemas</a>
         </div>
         <!-- Copyright -->
     </footer>

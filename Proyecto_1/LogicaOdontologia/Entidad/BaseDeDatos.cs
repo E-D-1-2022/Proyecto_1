@@ -41,6 +41,8 @@ namespace LogicaOdontologia.Entidad
             }
         }
 
-
+        public byte[] DescargarLog() {
+            return ArbolPacientes.GuardarLog();
+        }
     }
 }

@@ -1,7 +1,11 @@
-﻿
+﻿@using LogicaOdontologia.DTO;
 @{
-    ViewData["Title"] = "InsertarPacientes";
+    ViewData["Title"] = "Formulario registro";
 }
+@{PacienteDTO Data = new PacienteDTO();
+    if (ViewData["DataPaciente"] == null)
+    {
+
 
 <div class="container">
     <div class="card">
@@ -12,7 +16,7 @@
                 <div class="border border-black p-3">
                     <div class="form-group">
                         <label for="txtNombre"> Nombre completo: </label>
-                        <input class="form-control" type="text" id="Nombre" placeholder="Nombre completo" name="txtNombre" required />
+                        <input class="form-control" type="text" id="Nombre"placeholder="Nombre completo" name="txtNombre" required />
                     </div>
                     <div class="form-group">
                         <label for="txtDPI"> Número de DPI: </label>
@@ -42,8 +46,8 @@
                         <textarea rows="4" class="form-control" style="resize: none;" id="ultimoDiagnostico" name="txtultimoDiagnostico"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="txtultimoDiagnostico"> Tratamiento en curso: </label>
-                        <textarea rows="4" class="form-control" style="resize: none;" id="ultimoDiagnostico" name="txtultimoDiagnostico"></textarea>
+                        <label for="txtTratamiento"> Tratamiento en curso: </label>
+                        <textarea rows="4" class="form-control" style="resize: none;" id="txtTratamiento" name="txtTratamiento"></textarea>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center pt-2">
@@ -53,4 +57,63 @@
         </div>
     </div>
 </div>
+    }
+    else
+    {
+                Data = (PacienteDTO)ViewData["DataPaciente"];
+<div class="container">
+    <div class="card">
+        <h1 class=" card-header text-center  text-black  encabezado-card bg-primary">Actualizar Pacientes</h1>
+        <div class="card-body">
+            <form asp-controller="Pacientes" asp-action="GuardarPacientes">
+            <input type="hidden" name="TipoEnvio" value="FormularioActualizacion"/>
+                <i class="fa-solid fa-address-card mb-3"></i> Información Personal
+                <div class="border border-black p-3">
+                    <div class="form-group">
+                        <label for="txtNombre"> Nombre completo: </label>
+                        <input class="form-control" type="text" id="Nombre" placeholder="Nombre completo" value="@Data.Nombre_Completo" name="txtNombre" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtDPI"> Número de DPI: </label>
+                        <input class="form-control" type="number" id="dpi" placeholder="Número de DPI o CUI" name="txtDPI" value="@Data.DPI" readonly required />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEdad"> Edad: </label>
+                        <input class="form-control" type="number" value="@Data.Edad"  id="edad" placeholder="Edad" name="txtEdad" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtTel"> Teléfono: </label>
+                        <input class="form-control" type="number" id="telefono" value="@Data.TelefonoContacto"  placeholder="Teléfono" name="txtTelefono" required />
+                    </div>
+                </div>
+                <i class="fa-solid fa-book-medical"></i> Información Medica
+                <div class="border border-black p-3">
+                    <div class="form-group">
+                        <label for="dtpFechaUltima">Fecha ultima consulta: </label>
+                        <input class="form-control" type="date" id="fechaultimaconsulta" value="@Data.Fecha_ultima_consulta.Date.ToString("yyyy-MM-dd")" placeholder="Fecha ultima consulta" name="dtpFechaUltima" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="dtpFechaProxima">Fecha proxima consulta: </label>
+                        <input class="form-control" type="date" id="dtpFechaProxima" placeholder="Fecha Proxima consulta" value="@Data.Fecha_proxima_consulta.Value.Date.ToString("yyyy-MM-dd")" name="dtpFechaProxima" />
+                    </div>
+                    @if (Data.Descripciones_Tratamiento.Count > 0)
+                    {
+                        <div class="form-group">
+                            <label for="txtultimoDiagnostico"> Descripción último diagnostico:</label>
+                            <textarea rows="4" class="form-control"  style="resize: none;" id="ultimoDiagnostico" name="txtultimoDiagnostico">@Data.Descripciones_Tratamiento[Data.Descripciones_Tratamiento.Count - 1].Descripcion_Ultimo_Diagonisto</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtultimoDiagnostico"> Tratamiento en curso: </label>
+                            <textarea rows="4" class="form-control" style="resize: none;" id="ultimoDiagnostico" name="txtTratamiento">@Data.Descripciones_Tratamiento[Data.Descripciones_Tratamiento.Count - 1].Tratamiento_en_curso</textarea>
+                        </div>
+                    }
+                </div>
+                <div class="d-flex justify-content-center pt-2">
+                    <button type="submit" class="btn btn-primary">Actualizar Paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+        }
+    }

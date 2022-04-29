@@ -88,3 +88,10 @@ body {
     border-top-right-radius: 2rem !important;
     border-top-left-radius: 2rem !important;
 }
+.NoEncontrado {
+    background-image: linear-gradient(to bottom, blue,red,white);
+}
+.bordesNav {
+    border-bottom-left-radius: 10% !important;
+    border-bottom-right-radius: 5% !important;
+}

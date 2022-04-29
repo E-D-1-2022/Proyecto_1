@@ -90,17 +90,18 @@ namespace CustomStructures.AVL_Tree
 
             while (nodoActual != null)
             {
-                if (nodoActual.Value.Equals(Value))
-                {
-                    return nodoActual;
-                }
-                else if (CompareTo(Value, nodoActual.Value) < 0)
+                int result= CompareTo(Value, nodoActual.Value);
+                if (result>0)
                 {
                     nodoActual = nodoActual.derecha;
                 }
-                else
+                else if (result<0)
                 {
                     nodoActual = nodoActual.izquierda;
+                }
+                else
+                {
+                   return nodoActual;
                 }
             }
             return null;
@@ -141,9 +142,34 @@ namespace CustomStructures.AVL_Tree
                 Raiz = new Node<T>();
                 Raiz.Value = Value;
                 Count++;
+                ListaLog.Add(new LogDTO { Descripcion = "Se agrego un nuevo valor al árbol", FechaSuceso = DateTime.Now });
                 return;
             }
             Add(Value, Raiz);
+            ListaLog.Add(new LogDTO { Descripcion = "Se agrego un nuevo valor al árbol", FechaSuceso = DateTime.Now });
+            if (ConRIzquierda > 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
+                ConRIzquierda = 0;
+            }
+            else if (ConRIzquierda == 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
+                ConRIzquierda = 0;
+
+            }
+            else if (ConRDerecha > 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la derecha", FechaSuceso = DateTime.Now });
+                ConRDerecha = 0;
+
+            }
+            else if (ConRDerecha == 1)
+            {
+                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la derecha", FechaSuceso = DateTime.Now });
+                ConRDerecha = 0;
+
+            }
         }
         private void Add(T Value, Node<T> iterando)
         {
@@ -191,25 +217,8 @@ namespace CustomStructures.AVL_Tree
                     ConRIzquierda++;
                 }
             }
-            if (ConRIzquierda > 1)
-            {
-                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
-            }
-            else if (ConRIzquierda == 1)
-            {
-                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la izquierda", FechaSuceso = DateTime.Now });
-
-            }
-            else if (ConRDerecha > 1)
-            {
-                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una doble rotacion hacia la derecha", FechaSuceso = DateTime.Now });
-
-            }
-            else if (ConRDerecha == 1) { 
-                ListaLog.Add(new LogDTO { Descripcion = "Se realizo una simple rotacion hacia la derecha", FechaSuceso = DateTime.Now });
-
-            }
-            ListaLog.Add(new LogDTO { Descripcion = "Se agrego un nuevo valor al árbol", FechaSuceso = DateTime.Now });
+           
+          
         }
         /// <summary>
         /// Retutn if the element exist in the tree
@@ -450,8 +459,20 @@ namespace CustomStructures.AVL_Tree
             {
                 InOrder(startingNode.derecha);
             }
-            ListaLog.Add(new LogDTO { Descripcion = "Se realizoel recorrido inorder", FechaSuceso = DateTime.Now });
+            ListaLog.Add(new LogDTO { Descripcion = "Se realizo el recorrido inorder", FechaSuceso = DateTime.Now });
 
+        }
+
+        public byte[] GuardarLog() {
+            if (ListaLog.Count > 0) {
+                string Texto = "";
+                for (int x = 0; x < ListaLog.Count; x++)
+                {
+                    Texto += "Descripción: " + ListaLog[x].Descripcion + " Fecha suceso: " + ListaLog[x].FechaSuceso + Environment.NewLine;
+                }
+                return Encoding.ASCII.GetBytes(Texto);
+            }
+            return Encoding.ASCII.GetBytes("No se ah realizado alguna accion para poder descargar el archivo");
         }
 
     }

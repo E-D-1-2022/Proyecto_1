@@ -1,7 +1,7 @@
 ﻿@using LogicaOdontologia.DTO;
 
 @{
-    ViewData["Title"] = "ListarPacientes";
+    ViewData["Title"] = "Lista de pacientes";
 }
 <div class="row pb-2 justify-content-center">
     <div class="col-sm-2"><a class="btn btn-primary" asp-controller="Pacientes" asp-route-Tipo_Lista="Lipieza Dental">Filtar Por Necesitan hacerse una limpieza dental</a></div>
@@ -32,6 +32,9 @@
                 <th class="table-dark">
                     Fecha Proxima Consulta
                 </th>
+                <th class="table-dark">
+                    Acciones
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +58,16 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Fecha_proxima_consulta)
+                    </td>
+                    <td>
+                       
+                        <a class="btn btn-danger" asp-controller="Pacientes" asp-action="EliminarPaciente" asp-route-DPI="@item.DPI" title="Eliminar Paciente"><i class="fa-solid fa-trash-can"></i></a>
+                        <form asp-controller="Pacientes" asp-action="ActualizarPaciente">
+                            <input type="hidden" name="txtDPI" id="TipoEnvio" value="@item.DPI" />
+                            <input type="hidden" name="TipoEnvio" id="TipoEnvio" value="FormularioActualizacion" />
+                            <button type="submit" class="btn btn-success" title="Actualizar Paciente"><i class="fa-solid fa-arrow-rotate-left px-2"></i></button>
+                        </form>
+
                     </td>
                 </tr>
             }

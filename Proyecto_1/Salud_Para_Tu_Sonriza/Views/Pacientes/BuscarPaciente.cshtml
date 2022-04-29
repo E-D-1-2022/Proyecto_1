@@ -1,0 +1,117 @@
+﻿@using LogicaOdontologia.DTO;
+@{
+    ViewData["Title"] = "Resultado busqueda";
+}
+
+@if (ViewData["Paciente"] == null)
+{
+    <div class="containerFull">
+        <div class="modal-dialog">
+            <div class="card modal-content NoEncontrado">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white">Error</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="text-white">El paciente con el # de DPI o nombre no fue identificado</p>
+                </div>
+                <div class="modal-footer">
+                    <a asp-controller="Pacientes" asp-action="ListarPacientes" class="btn btn-primary">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    PacienteDTO data = (PacienteDTO)ViewData["Paciente"];
+    <div class="containerFull">
+        <ul class="list-group text-center">
+            <li class="list-group-item active" aria-current="true">Datos del paciente</li>
+            <li class="list-group-item">Nombre Completo: @data.Nombre_Completo</li>
+
+            <li class="list-group-item">DPI: @data.DPI</li>
+            <li class="list-group-item">Edad: @data.Edad</li>
+            <li class="list-group-item">Teléfono: @data.TelefonoContacto</li>
+            <li class="list-group-item">Ultima consulta: @data.Fecha_ultima_consulta</li>
+            <li class="list-group-item">Proxima consulta: @data.Fecha_proxima_consulta</li>
+            @if (data.Descripciones_Tratamiento.Count > 0)
+            {
+                @if (data.Descripciones_Tratamiento[data.Descripciones_Tratamiento.Count - 1] != null)
+                {
+                    <li class="list-group-item">Descripción ultimo diagnostico: @data.Descripciones_Tratamiento[data.Descripciones_Tratamiento.Count - 1].Descripcion_Ultimo_Diagonisto</li>
+                    <li class="list-group-item">Fecha ultimo diagnostico: @data.Descripciones_Tratamiento[data.Descripciones_Tratamiento.Count - 1].FechaDiagnostico</li>
+                    <li class="list-group-item">Tratamiento: @data.Descripciones_Tratamiento[data.Descripciones_Tratamiento.Count - 1].Tratamiento_en_curso</li>
+
+                }
+            }
+        </ul>
+        <div class="d-flex pt-2  justify-content-center" role="group" aria-label="Basic mixed styles example">
+            <button type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#ModalAgenda" >Re agendar cita</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModlaProceso" title="Con esta opcion usted continual el proceso al que este ligado el paciente">Continuar Proceso</button>
+        </div>
+    </div>
+    <!-- Modal para continuar el proceso clinico -->
+    <div class="modal fade" id="ModlaProceso" tabindex="-1" aria-labelledby="ModlaProceso" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Continuar Proceso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Pacientes" asp-action="ActualizarPaciente">
+                        <input type="hidden" id="TipoEnvio" name="TipoEnvio" value="FormularioProceso" />
+                        <input type="hidden" id="txtDPI" name="txtDPI" value="@data.DPI" />
+                        <div class="form-control mb-2">
+                            <label class="form-label" for="txtDiagnostico"><i class="fa-solid fa-microchip px-2"></i>Descripcion Diagnostico:</label>
+                            <textarea class="form-control" cols="5" rows="5" id="txtDiagnostico" name="txtDiagnostico" style="resize: none;" required></textarea>
+                        </div>
+                        <div class="form-control">
+                            <label class="form-label" for="txtTratamiento"><i class="fa-solid fa-kit-medical"></i>Tratamiento Recomendado:</label>
+                            <textarea class="form-control" cols="5" rows="5" id="txtTratamiento" name="txtTratamiento" style="resize: none;" required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Guardar Proceso</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!---Modal para reagendar la cita-->
+    <div class="modal fade" id="ModalAgenda" tabindex="-1" aria-labelledby="ModalAgenda" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Continuar Proceso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Pacientes" asp-action="ActualizarPaciente">
+                        <input type="hidden" id="TipoEnvio" name="TipoEnvio" value="ReagendarCita" />
+                        <input type="hidden" id="txtDPI" name="txtDPI" value="@data.DPI" />
+                        <div class="form-control">
+                            <label class="form-label" for="txtNuevaFecha"><i class="fa-solid fa-kit-medical"></i>Actualizar Fecha:</label>
+                            <input type="date" id="txtFechaNueva" name="txtFechaNueva" value="@data.Fecha_proxima_consulta.Value.ToString("yyyy-MM-dd")"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Reagendar cita</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+}
+
+
+

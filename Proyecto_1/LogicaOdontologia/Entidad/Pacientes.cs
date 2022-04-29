@@ -8,11 +8,14 @@ namespace LogicaOdontologia.Entidad
 {
     public class Pacientes
     {
+        /// <summary>
+        /// Base de datos
+        /// </summary>
         BaseDeDatos bd = BaseDeDatos.Instance;
         public void InsertarPacientes(PacienteDTO pacienteDTO) {
             try
             {
-                BaseDeDatos.Instance.ArbolPacientes.Add(pacienteDTO);
+                bd.ArbolPacientes.Add(pacienteDTO);
             }
             catch (Exception ex)
             {
@@ -24,7 +27,7 @@ namespace LogicaOdontologia.Entidad
         public void EliminarPacientes(PacienteDTO pacienteDTO) {
             try
             {
-                BaseDeDatos.Instance.ArbolPacientes.Remove(pacienteDTO);
+                bd.ArbolPacientes.Remove(pacienteDTO);
             }
             catch (Exception ex)
             {
@@ -35,7 +38,7 @@ namespace LogicaOdontologia.Entidad
         public PacienteDTO BuscarPaciente(PacienteDTO pacienteDTO) {
             try
             {
-                return BaseDeDatos.Instance.ArbolPacientes.Find(pacienteDTO);
+                return bd.ArbolPacientes.Find(pacienteDTO);
             }
             catch (Exception ex)
             {
@@ -53,6 +56,10 @@ namespace LogicaOdontologia.Entidad
 
                 throw(ex);
             }
+        }
+
+        public byte[]DescargarArchivoLog() {
+            return bd.DescargarLog();
         }
     }
 }
