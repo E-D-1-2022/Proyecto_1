@@ -54,6 +54,7 @@ namespace Salud_Para_Tu_Sonriza.Controllers
             {
 
                 ViewBag.Message = ex.Message;
+                return View("../Home/Error");
             }
             return View();
         }
@@ -121,7 +122,8 @@ namespace Salud_Para_Tu_Sonriza.Controllers
             catch (Exception ex)
             {
 
-                throw (ex);
+                ViewBag.Message = ex.Message;
+                return View("../Home/Error");
             }
 
         }
@@ -177,7 +179,7 @@ namespace Salud_Para_Tu_Sonriza.Controllers
                         }
                         else {
                             ViewBag.Message = "El dia con la fecha seleccionada ya esta llena";
-                            return View("./GuardarPacientes");
+                            return View("../Home/Error");
 
                         }
 
@@ -189,8 +191,8 @@ namespace Salud_Para_Tu_Sonriza.Controllers
 
 
     }
-    [HttpGet]
-    public IActionResult EliminarPaciente(Int64 DPI)
+        [HttpGet]
+        public IActionResult EliminarPaciente(Int64 DPI)
     {
         try
         {
@@ -205,7 +207,7 @@ namespace Salud_Para_Tu_Sonriza.Controllers
         }
         return View("./GuardarPacientes");
     }
-    public FileResult DescargarLog()
+        public FileResult DescargarLog()
     {
         GestorPacientes gestorPacientes = new GestorPacientes();
         return File(gestorPacientes.DescargarLog(), "plain/text", "LogArbol.txt");

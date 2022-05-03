@@ -3,27 +3,7 @@
     ViewData["Title"] = "Operación realizada";
 }
 
-@if (ViewBag.Message != null)
-{
-    <div class="containerFull">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Error</h5>
-                </div>
-                <div class="modal-body">
-                    <p>@ViewBag.Message</p>
-                </div>
-                <div class="modal-footer">
-                    <a  asp-controller="Pacientes" asp-action="InsertarPacientes" class="btn btn-secondary">Aceptar</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
-}
-else
-{
     <div class="containerFull">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -41,5 +21,5 @@ else
         </div>
     </div>
 
-}
+
 
